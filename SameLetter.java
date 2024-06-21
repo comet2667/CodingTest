@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.stream.IntStream;
 
 public class SameLetter {
 
@@ -30,7 +32,23 @@ public class SameLetter {
                 answer.add(-1); //while 반복문을 전부 수행했을 경우 동일한 문자가 없다는 뜻이므로 -1 추가
             }
         }
-
         return answer.stream().mapToInt(value -> value).toArray();
+    }
+
+    //다른 사람의 풀이
+    public static int[] soloution2(String s){
+        int[] answer = new int[s.length()];
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(int i=0; i<s.length();i++){
+            char ch = s.charAt(i);
+            answer[i] = i-map.getOrDefault(ch,i+1); //getOrDefault -> null 대신 기본 값을 지정
+            map.put(ch,i);
+        }
+        return answer;
+    }
+
+    //한줄로 작성할 경우...
+    public static int[] soloution3(String s){
+        return IntStream.range(0, s.length()).map(i -> s.substring(0, i).lastIndexOf(s.charAt(i)) > -1 ? i - s.substring(0, i).lastIndexOf(s.charAt(i)) : -1).toArray();
     }
 }
